@@ -1,4 +1,3 @@
-C:\Users\yalin\Desktop\Yalın\Personal Projects\Calculator\calculator\calculator\obj\Debug\calculator.csprojAssemblyReference.cache
 C:\Users\yalin\Desktop\Yalın\Personal Projects\Calculator\calculator\calculator\obj\Debug\calculator.Calculator.resources
 C:\Users\yalin\Desktop\Yalın\Personal Projects\Calculator\calculator\calculator\obj\Debug\calculator.Properties.Resources.resources
 C:\Users\yalin\Desktop\Yalın\Personal Projects\Calculator\calculator\calculator\obj\Debug\calculator.csproj.GenerateResource.cache
@@ -8,3 +7,4 @@ C:\Users\yalin\Desktop\Yalın\Personal Projects\Calculator\calculator\calculator
 C:\Users\yalin\Desktop\Yalın\Personal Projects\Calculator\calculator\calculator\bin\Debug\calculator.pdb
 C:\Users\yalin\Desktop\Yalın\Personal Projects\Calculator\calculator\calculator\obj\Debug\calculator.exe
 C:\Users\yalin\Desktop\Yalın\Personal Projects\Calculator\calculator\calculator\obj\Debug\calculator.pdb
+C:\Users\yalin\Desktop\Yalın\Personal Projects\Calculator\calculator\calculator\obj\Debug\calculator.csproj.AssemblyReference.cache
