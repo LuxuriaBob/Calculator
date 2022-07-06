@@ -50,6 +50,7 @@ namespace calculator
         private Rectangle Button0OriginalRect;
         private Rectangle ButtonCommaOriginalRect;
         private Rectangle ButtonEqualsOriginalRect;
+        private Rectangle MenuStripOriginalRect;
         private Rectangle formOriginalSize;
         public Calculator()
         {
@@ -61,6 +62,7 @@ namespace calculator
             textResult.BackColor = this.BackColor;
             textHist.BorderStyle = 0;
             textHist.BackColor = this.BackColor;
+            TrgMenuStrip.BackColor = this.BackColor;
 
             formOriginalSize = new Rectangle(this.Location.X, this.Location.Y, this.Size.Width, this.Size.Height);
             TextResultOriginalRect = new Rectangle(textResult.Location.X, textResult.Location.Y, textResult.Width, textResult.Height);
@@ -76,8 +78,8 @@ namespace calculator
             ButtonExponentOriginalRect = new Rectangle(ButtonExponent.Location.X, ButtonExponent.Location.Y, ButtonExponent.Width, ButtonExponent.Height);
             ButtonModuloOriginalRect = new Rectangle(ButtonModulo.Location.X, ButtonModulo.Location.Y, ButtonModulo.Width, ButtonModulo.Height);
             ButtonRootSquareOriginalRect = new Rectangle(ButtonRootSquare.Location.X, ButtonRootSquare.Location.Y, ButtonRootSquare.Width, ButtonRootSquare.Height);
-            ButtonLeftParanthesisOriginalRect = new Rectangle(ButtonLeftParanthesis.Location.X, ButtonLeftParanthesis.Location.Y, ButtonLeftParanthesis.Width, ButtonLeftParanthesis.Height);
-            ButtonRightParanthesisOriginalRect = new Rectangle(ButtonRightParanthesis.Location.X, ButtonRightParanthesis.Location.Y, ButtonRightParanthesis.Width, ButtonRightParanthesis.Height);
+            ButtonLeftParanthesisOriginalRect = new Rectangle(ButtonGraph.Location.X, ButtonGraph.Location.Y, ButtonGraph.Width, ButtonGraph.Height);
+            ButtonRightParanthesisOriginalRect = new Rectangle(ButtonX.Location.X, ButtonX.Location.Y, ButtonX.Width, ButtonX.Height);
             ButtonFactorialOriginalRect = new Rectangle(ButtonFactorial.Location.X, ButtonFactorial.Location.Y, ButtonFactorial.Width, ButtonFactorial.Height);
             ButtonDivisionOriginalRect = new Rectangle(ButtonDivision.Location.X, ButtonDivision.Location.Y, ButtonDivision.Width, ButtonDivision.Height);
             ButtonPowerOriginalRect = new Rectangle(ButtonPower.Location.X, ButtonPower.Location.Y, ButtonPower.Width, ButtonPower.Height);
@@ -100,6 +102,7 @@ namespace calculator
             Button0OriginalRect = new Rectangle(Button0.Location.X, Button0.Location.Y, Button0.Width, Button0.Height);
             ButtonCommaOriginalRect = new Rectangle(ButtonComma.Location.X, ButtonComma.Location.Y, ButtonComma.Width, ButtonComma.Height);
             ButtonEqualsOriginalRect = new Rectangle(ButtonEquals.Location.X, ButtonEquals.Location.Y, ButtonEquals.Width, ButtonEquals.Height);
+            MenuStripOriginalRect = new Rectangle(TrgMenuStrip.Location.X, TrgMenuStrip.Location.Y, TrgMenuStrip.Width, TrgMenuStrip.Height);
         }
         private void ResizeChildrenControls()
         {
@@ -116,8 +119,8 @@ namespace calculator
             ResizeControl(ButtonExponentOriginalRect, ButtonExponent);
             ResizeControl(ButtonModuloOriginalRect, ButtonModulo);
             ResizeControl(ButtonRootSquareOriginalRect, ButtonRootSquare);
-            ResizeControl(ButtonLeftParanthesisOriginalRect, ButtonLeftParanthesis);
-            ResizeControl(ButtonRightParanthesisOriginalRect, ButtonRightParanthesis);
+            ResizeControl(ButtonLeftParanthesisOriginalRect, ButtonGraph);
+            ResizeControl(ButtonRightParanthesisOriginalRect, ButtonX);
             ResizeControl(ButtonFactorialOriginalRect, ButtonFactorial);
             ResizeControl(ButtonDivisionOriginalRect, ButtonDivision);
             ResizeControl(ButtonPowerOriginalRect, ButtonPower);
@@ -140,6 +143,7 @@ namespace calculator
             ResizeControl(Button0OriginalRect, Button0);
             ResizeControl(ButtonCommaOriginalRect, ButtonComma);
             ResizeControl(ButtonEqualsOriginalRect, ButtonEquals);
+            ResizeControl(MenuStripOriginalRect, TrgMenuStrip);
         }
         private void ResizeControl(Rectangle OriginalControlRect, Control control)
         {
@@ -160,8 +164,11 @@ namespace calculator
             ResizeChildrenControls();
         }
 
+        public static string SetValueForB = "";
+        public static string SetValueForA = "";
+        public static int minus = 0; 
         float num1, ans;
-        int count, clear;
+        int count, clear, second, graph;
         int zero = 1;
         private float Factorial(float x)
         {
@@ -183,16 +190,6 @@ namespace calculator
         {
             float z = (x < 0) ? -x : x;
             return z;
-        }
-        private float Power(float x, float y)
-        {
-            float output = 1;
-
-            for (int i = 0; i < y; ++i)
-            {
-                output *= x;
-            }
-            return output;
         }
         private float Exponent(float x, float y)
         {
@@ -368,31 +365,61 @@ namespace calculator
             textResult.Clear();
             textResult.Text += Math.E;
         }
-        private void ButtonLeftParanthesis_Click(object sender, EventArgs e)
+        private void ButtonX_Click(object sender, EventArgs e)
         {
-            textResult.Text += "(";
+            textResult.Text += "X";
+            int textResultLength = textResult.TextLength;
+            num1 = float.Parse((textResult.Text.Remove(textResultLength - 1)));
+            SetValueForA = (textResult.Text.Remove(textResultLength - 1));
+            graph = 1;
         }
-        private void ButtonRightParanthesis_Click(object sender, EventArgs e)
+        private void ButtonGraph_Click(object sender, EventArgs e)
         {
-            textResult.Text += ")";
+            SetValueForB = textResult.Text;
+            if(minus == 1)
+            {
+                SetValueForB = textResult.Text;
+            }
+            graph = 0;
+            zero = 0;
+            textHist.Text += textResult.Text;
+            textResult.Clear();
+            var graphicsForm = new GraphForm();
+            graphicsForm.Show();
+            clear = 1;
         }
         private void ButtonPlus_Click(object sender, EventArgs e)
         {
-            num1 = float.Parse(textResult.Text, CultureInfo.InvariantCulture.NumberFormat);
-            textHist.Text += num1 + " + ";
-            textResult.Clear();
-            textResult.Focus();
-            count = 1;
+            if(graph == 1)
+            {
+                textHist.Text += num1 + " X + ";
+                textResult.Clear(); 
+            } else {
+                num1 = float.Parse(textResult.Text, CultureInfo.InvariantCulture.NumberFormat);
+                textHist.Text += num1 + " + ";
+                textResult.Clear();
+                textResult.Focus();
+                count = 1;
+            }
         }
         private void ButtonMinus_Click(object sender, EventArgs e)
         {
             if (textResult.Text != "")
             {
-                num1 = float.Parse(textResult.Text, CultureInfo.InvariantCulture.NumberFormat);
-                textHist.Text += num1 + " - ";
-                textResult.Clear();
-                textResult.Focus();
-                count = 2;
+                if (graph == 1)
+                {
+                    textHist.Text += num1 + " X - ";
+                    textResult.Clear();
+                    minus = 1;
+
+                } else {
+                    num1 = float.Parse(textResult.Text, CultureInfo.InvariantCulture.NumberFormat);
+                    textHist.Text += num1 + " - ";
+                    textResult.Clear();
+                    textResult.Focus();
+                    count = 2;
+                    minus = 1;
+                }
             }
         }
         private void ButtonMultiplication_Click(object sender, EventArgs e)
@@ -406,7 +433,7 @@ namespace calculator
         private void ButtonDivision_Click(object sender, EventArgs e)
         {
             num1 = float.Parse(textResult.Text, CultureInfo.InvariantCulture.NumberFormat);
-            textHist.Text += num1 + " / ";
+            textHist.Text += num1 + " ÷ ";
             textResult.Clear();
             textResult.Focus();
             count = 4;
@@ -421,11 +448,20 @@ namespace calculator
         }
         private void ButtonPower_Click(object sender, EventArgs e)
         {
-            num1 = float.Parse(textResult.Text);
-            textHist.Text += num1 + " x^y ";
-            textResult.Clear();
-            textResult.Focus();
-            count = 6;
+            if(second == 1)
+            {
+                num1 = float.Parse(textResult.Text);
+                textHist.Text += num1 + " ʸ√x ";
+                textResult.Clear();
+                textResult.Focus();
+                count = 6;
+            } else {
+                num1 = float.Parse(textResult.Text);
+                textHist.Text += num1 + " x^y ";
+                textResult.Clear();
+                textResult.Focus();
+                count = 6;
+            }
         }
         private void ButtonExponent_Click(object sender, EventArgs e)
         {
@@ -465,47 +501,137 @@ namespace calculator
         }
         private void ButtonXSquared_Click(object sender, EventArgs e)
         {
-            num1 = float.Parse(textResult.Text);
-            textResult.Clear();
-            textHist.Text += num1 + "x²";
-            ans = num1 * num1;
-            textResult.Text = ans.ToString();
-            clear = 1;
+            if(second == 1)
+            {
+                num1 = float.Parse(textResult.Text);
+                textResult.Clear();
+                textHist.Text += num1 + "x³";
+                ans = num1 * num1 * num1;
+                textResult.Text = ans.ToString();
+                clear = 1;
+            } else {
+                num1 = float.Parse(textResult.Text);
+                textResult.Clear();
+                textHist.Text += num1 + "x²";
+                ans = num1 * num1;
+                textResult.Text = ans.ToString();
+                clear = 1;
+            }
         }
         private void ButtonPowerOfTen_Click(object sender, EventArgs e)
         {
-            num1 = float.Parse(textResult.Text);
-            textResult.Clear();
-            textHist.Text += num1 + "10^x";
-            ans = Power(10, num1);
-            textResult.Text = ans.ToString();
-            clear = 1;
+            if (second == 1)
+            {
+                num1 = float.Parse(textResult.Text);
+                textResult.Clear();
+                textHist.Text += num1 + "2˟";
+                ans = (float)Math.Pow(2,num1);
+                textResult.Text = ans.ToString();
+                clear = 1;
+            }
+            else
+            {
+                num1 = float.Parse(textResult.Text);
+                textResult.Clear();
+                textHist.Text += num1 + "10˟";
+                ans = (float)Math.Pow(10, num1);
+                textResult.Text = ans.ToString();
+                clear = 1;
+            }   
         }
         private void ButtonRootSquare_Click(object sender, EventArgs e)
         {
-            num1 = float.Parse(textResult.Text);
-            textResult.Clear();
-            textHist.Text += "√(" + num1 + ")";
-            ans = (float)Math.Sqrt(num1);
-            textResult.Text = ans.ToString();
-            clear = 1;
+            if(second == 1)
+            {
+                num1 = float.Parse(textResult.Text);
+                textResult.Clear();
+                textHist.Text += "∛(" + num1 + ")";
+                ans = (float)Math.Pow(num1, 0.3333333333333333);
+                textResult.Text = ans.ToString();
+                clear = 1;
+            } else {
+                num1 = float.Parse(textResult.Text);
+                textResult.Clear();
+                textHist.Text += "√(" + num1 + ")";
+                ans = (float)Math.Sqrt(num1);
+                textResult.Text = ans.ToString();
+                clear = 1;
+            }
         }
         private void ButtonLog_Click(object sender, EventArgs e)
         {
-            num1 = float.Parse(textResult.Text);
-            textResult.Clear();
-            textHist.Text += "log(" + num1 + ")";
-            ans = (float)Math.Log10(num1);
-            textResult.Text = ans.ToString();
-            clear = 1;
+            if(second == 1)
+            {
+                num1 = float.Parse(textResult.Text);
+                textResult.Clear();
+                textHist.Text += "logᵧ(" + num1 + ")";
+                count = 8;
+            } else {
+                num1 = float.Parse(textResult.Text);
+                textResult.Clear();
+                textHist.Text += "log(" + num1 + ")";
+                ans = (float)Math.Log10(num1);
+                textResult.Text = ans.ToString();
+                clear = 1;
+            }
         }
         private void ButtonLn_Click(object sender, EventArgs e)
         {
-            num1 = float.Parse(textResult.Text);
-            textResult.Clear();
-            textHist.Text += "ln(" + (double)num1 + ")";
-            ans = (float)Math.Log(num1);
-            textResult.Text = ans.ToString();
+            if(second == 1)
+            {
+                num1 = float.Parse(textResult.Text);
+                textResult.Clear();
+                textHist.Text += "e^(" + num1 + ")";
+                ans = (float)Math.Pow(Math.E, num1);
+                textResult.Text = ans.ToString();
+                clear = 1;
+            } else {
+                num1 = float.Parse(textResult.Text);
+                textResult.Clear();
+                textHist.Text += "ln(" + (double)num1 + ")";
+                ans = (float)Math.Log(num1);
+                textResult.Text = ans.ToString();
+                clear = 1;
+            }
+        }
+        private void ButtonSecond_Click(object sender, EventArgs e)
+        {
+            if (ButtonLn.Text == "ln")
+            {
+                ButtonXSquared.Text = "x³";
+                ButtonRootSquare.Text = "∛x";
+                ButtonPower.Text = "ʸ√x";
+                ButtonPowerOfTen.Text = "2˟";
+                ButtonLog.Text = "logᵧx";
+                ButtonLn.Text = "e˟";
+                second = 1;
+            } else if (ButtonLn.Text == "e˟") {
+                
+                ButtonXSquared.Text = "x²";
+                ButtonRootSquare.Text = "√x";
+                ButtonPower.Text = "xʸ";
+                ButtonPowerOfTen.Text = "10˟";
+                ButtonLog.Text = "log";
+                ButtonLn.Text = "ln";
+                second = 0;
+            }
+        }
+        private void SinToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            textHist.Text = "sin(" + textResult.Text + ")";
+            textResult.Text = Math.Sin(float.Parse(textResult.Text)*Math.PI/180).ToString();
+            clear = 1;
+        }
+        private void CosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            textHist.Text = "cos(" + textResult.Text + ")";
+            textResult.Text = Math.Cos(float.Parse(textResult.Text) * Math.PI / 180).ToString();
+            clear = 1;
+        }
+        private void TanToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            textHist.Text = "tan(" + textResult.Text + ")";
+            textResult.Text = Math.Tan(float.Parse(textResult.Text) * Math.PI / 180).ToString();
             clear = 1;
         }
         private void ButtonEquals_Click(object sender, EventArgs e)
@@ -523,33 +649,45 @@ namespace calculator
                     textResult.Text = ans.ToString();
                     break;
                 case 2:
-                    ans = num1 - float.Parse(textResult.Text);
-                    textHist.Text = num1 + " - " + textResult.Text + " =";
+                    ans = num1 - float.Parse(textResult.Text, CultureInfo.InvariantCulture.NumberFormat);
+                    textHist.Text = num1 + " - " + float.Parse(textResult.Text, CultureInfo.InvariantCulture.NumberFormat) + " =";
                     textResult.Text = ans.ToString();
                     break;
                 case 3:
-                    ans = num1 * float.Parse(textResult.Text);
-                    textHist.Text = num1 + " x " + textResult.Text + " =";
+                    ans = num1 * float.Parse(textResult.Text, CultureInfo.InvariantCulture.NumberFormat);
+                    textHist.Text = num1 + " x " + float.Parse(textResult.Text, CultureInfo.InvariantCulture.NumberFormat) + " =";
                     textResult.Text = ans.ToString();
                     break;
                 case 4:
-                    ans = num1 / float.Parse(textResult.Text);
-                    textHist.Text = num1 + " ÷ " + textResult.Text + " =";
+                    ans = num1 / float.Parse(textResult.Text, CultureInfo.InvariantCulture.NumberFormat);
+                    textHist.Text = num1 + " ÷ " + float.Parse(textResult.Text, CultureInfo.InvariantCulture.NumberFormat) + " =";
                     textResult.Text = ans.ToString();
                     break;
                 case 5:
-                    ans = num1 % float.Parse(textResult.Text);
-                    textHist.Text = num1 + " % " + textResult.Text + " =";
+                    ans = num1 % float.Parse(textResult.Text, CultureInfo.InvariantCulture.NumberFormat);
+                    textHist.Text = num1 + " % " + float.Parse(textResult.Text, CultureInfo.InvariantCulture.NumberFormat) + " =";
                     textResult.Text = ans.ToString();
                     break;
                 case 6:
-                    ans = Power(num1, float.Parse(textResult.Text));
-                    textHist.Text = num1 + " ^ " + textResult.Text + " =";
-                    textResult.Text = ans.ToString();
+                    if(second == 1)
+                    {
+                        ans = (float)Math.Pow(num1, 1/(float.Parse(textResult.Text)));
+                        textHist.Text = num1 + " ^ 1/" + textResult.Text + " =";
+                        textResult.Text = ans.ToString();
+                    } else {
+                        ans = (float)Math.Pow(num1, float.Parse(textResult.Text));
+                        textHist.Text = num1 + " ^ " + textResult.Text + " =";
+                        textResult.Text = ans.ToString();
+                    }
                     break;
                 case 7:
                     ans = Exponent(num1, float.Parse(textResult.Text));
                     textHist.Text = ans.ToString() + " =";
+                    textResult.Text = ans.ToString();
+                    break;
+                case 8:
+                    ans = (float)Math.Log(num1, float.Parse(textResult.Text));
+                    textHist.Text = textHist.Text = "logᵧ" + num1 + "=";
                     textResult.Text = ans.ToString();
                     break;
                 default:
@@ -569,6 +707,7 @@ namespace calculator
                 {
                     textResult.Text = 0.ToString();
                 }
+                zero = 1;
             }
         }
         private void ButtonC_Click(object sender, EventArgs e)

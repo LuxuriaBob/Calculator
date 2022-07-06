@@ -8,3 +8,4 @@ C:\Users\yalin\Desktop\Yalın\Personal Projects\Calculator\calculator\calculator
 C:\Users\yalin\Desktop\Yalın\Personal Projects\Calculator\calculator\calculator\obj\Debug\calculator.exe
 C:\Users\yalin\Desktop\Yalın\Personal Projects\Calculator\calculator\calculator\obj\Debug\calculator.pdb
 C:\Users\yalin\Desktop\Yalın\Personal Projects\Calculator\calculator\calculator\obj\Debug\calculator.csproj.AssemblyReference.cache
+C:\Users\yalin\Desktop\Yalın\Personal Projects\Calculator\calculator\calculator\obj\Debug\calculator.GraphForm.resources
